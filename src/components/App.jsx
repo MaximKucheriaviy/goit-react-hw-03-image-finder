@@ -5,7 +5,6 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 export class App extends Component {
   state = {
     searchKeyword: "",
-    page: 1,
   }
   changeSerachKeyword = word => {
     this.setState({
@@ -14,10 +13,10 @@ export class App extends Component {
   }
   render(){
     return (
-      <>
+      <div className="App">
         <SearchBar onSubmit={this.changeSerachKeyword}/>
-        <ImageGallery keyword={this.state.searchKeyword} page={this.state.page}/>
-      </>
+        <ImageGallery keyword={this.state.searchKeyword} page={1}/>
+      </div>
     );
   }
 };

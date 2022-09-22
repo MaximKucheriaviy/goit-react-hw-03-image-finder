@@ -2,7 +2,7 @@ import { Component } from "react";
 import axios from "axios";
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { Loader } from "components/Loder/Loader";
-
+import { Button } from "components/Button/Button";
 
 export class ImageGallery extends Component{
     apiKey = "29155901-7a6502b1ec64ba72602e491fa"
@@ -10,11 +10,19 @@ export class ImageGallery extends Component{
     
     state = {
         renderImages: [],
-        isLoading: false
+        isLoading: false,
+        page: this.props.page,
+        totalItems: 0
+    }
+    
+    incrementPage = () => {
+        this.setState(prevState => {
+            return {page: prevState.page + 1}
+        })
     }
     
     componentDidUpdate(prevProps, prevState){
-        if(this.props.keyword && (prevProps.keyword !== this.props.keyword || prevProps.page !== this.props.page)){
+        if(this.props.keyword && (prevProps.keyword !== this.props.keyword || prevState.page !== this.state.page)){
             this.setState({
                 isLoading: true
             })
@@ -23,11 +31,12 @@ export class ImageGallery extends Component{
                 params:{
                     key: this.apiKey,
                     q: this.props.keyword,
-                    page: this.props.page,
+                    page: this.state.page,
                     per_page: 12
                 }
             })
             .then(response => {
+                console.log(response);
                 const images = response.data.hits.map(item => {
                     return {
                         id: item.id,
@@ -35,9 +44,10 @@ export class ImageGallery extends Component{
                         largeUrl: item.largeImageURL
                     }
                 })
-                if(this.props.page === 1){
+                if(prevProps.keyword !== this.props.keyword){
                     this.setState({
-                        renderImages: images
+                        renderImages: images,
+                        totalItems: response.data.totalHits
                     })
                 }
                 else{
@@ -60,15 +70,18 @@ export class ImageGallery extends Component{
     }
     render(){
         return(
-            <ul className="ImageGallery">
-                {this.state.isLoading && <Loader/>}
-                {this.state.renderImages.map(item => 
-                <ImageGalleryItem 
-                    src={item.webUrl} 
-                    alt={this.state.keyword}
-                    key={item.id}
-                />)}
-            </ul>
+            <>
+                <ul className="ImageGallery">
+                    {this.state.isLoading && <Loader/>}
+                    {this.state.renderImages.map(item => 
+                    <ImageGalleryItem 
+                        src={item.webUrl} 
+                        alt={this.state.keyword}
+                        key={item.id}
+                    />)}
+                </ul>
+                {(this.state.renderImages.length !== 0 && this.state.renderImages.length < this.state.totalItems) && <Button onClick={this.incrementPage}/>}
+            </>
         )
     }
 }
