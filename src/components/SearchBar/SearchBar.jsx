@@ -1,7 +1,7 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
 import { AiOutlineSearch } from "react-icons/ai";
-
+import { Loader } from "components/Loder/Loader";
 
 
 

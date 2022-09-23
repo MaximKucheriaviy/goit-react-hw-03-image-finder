@@ -1,5 +1,7 @@
 import { Component } from "react";
 import PropTypes from "prop-types"
+import { createPortal } from "react-dom";
+const modalPortal = document.querySelector("#modal-root");
 
 export class Modal extends Component{
     escapeHendler = () => {
@@ -18,11 +20,11 @@ export class Modal extends Component{
     }
     render(){
         return(
-            <div onClick={this.overlayClickHendler} className="Overlay">
+            createPortal(<div onClick={this.overlayClickHendler} className="Overlay">
                 <div className="Modal">
                     <img src={this.props.path} alt="Big img"/>
                 </div>
-            </div>
+            </div>, modalPortal)
         )
     }
 }
