@@ -1,8 +1,10 @@
 import { Component } from "react";
+import PropTypes from "prop-types"
 import axios from "axios";
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { Loader } from "components/Loder/Loader";
 import { Button } from "components/Button/Button";
+
 
 export class ImageGallery extends Component{
     apiKey = "29155901-7a6502b1ec64ba72602e491fa"
@@ -36,7 +38,6 @@ export class ImageGallery extends Component{
                 }
             })
             .then(response => {
-                console.log(response);
                 const images = response.data.hits.map(item => {
                     return {
                         id: item.id,
@@ -73,17 +74,23 @@ export class ImageGallery extends Component{
             <>
                 <ul className="ImageGallery">
                     {this.state.isLoading && <Loader/>}
-                    {this.state.renderImages.map(item => 
+                    {this.state.renderImages.map((item, index) => 
                     <ImageGalleryItem 
                         onClick={this.props.setModalPath}
                         src={item.webUrl} 
                         alt={this.state.keyword}
                         bigImage={item.largeUrl}
-                        key={item.id}
+                        key={item.id * 10 + index}
                     />)}
                 </ul>
                 {(this.state.renderImages.length !== 0 && this.state.renderImages.length < this.state.totalItems) && <Button onClick={this.incrementPage}/>}
             </>
         )
     }
+}
+
+ImageGallery.propTypes = {
+    keyword: PropTypes.string,
+    page: PropTypes.number,
+    setModalPath: PropTypes.func
 }

@@ -1,6 +1,6 @@
 import { Component } from "react";
-import {PropTypes} from "prop-types";
-//import { AiOutlineSearch } from "react-icons/ai";
+import PropTypes from "prop-types";
+import { AiOutlineSearch } from "react-icons/ai";
 
 
 
@@ -24,11 +24,8 @@ export class SearchBar extends Component{
             <header className="Searchbar">
                 <form className="SearchForm" onSubmit={this.hendlerSubmit}>
                     <button type="submit" className="SearchForm-button">
-                    <span className="SearchForm-button-label">
-                        Find
-                    </span>
+                        <AiOutlineSearch size={20}/>
                     </button>
-
                     <input
                     className="SearchForm-input"
                     type="text"

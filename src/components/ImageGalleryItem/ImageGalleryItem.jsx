@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types"
 
 export class ImageGalleryItem extends Component{
     clckHendler = () => {
@@ -12,4 +13,12 @@ export class ImageGalleryItem extends Component{
             </li>
         )
     }
+}
+
+
+ImageGalleryItem.propTypes = {
+    onClick: PropTypes.func,
+    src: PropTypes.string,
+    alt: PropTypes.string,
+    bigImage: PropTypes.string
 }

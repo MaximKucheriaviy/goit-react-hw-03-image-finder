@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types"
 
 export class Modal extends Component{
     escapeHendler = () => {
@@ -24,4 +25,9 @@ export class Modal extends Component{
             </div>
         )
     }
+}
+
+Modal.propTypes = {
+    Path: PropTypes.string,
+    onClick: PropTypes.func
 }
