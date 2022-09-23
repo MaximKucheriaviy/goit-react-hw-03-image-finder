@@ -75,8 +75,10 @@ export class ImageGallery extends Component{
                     {this.state.isLoading && <Loader/>}
                     {this.state.renderImages.map(item => 
                     <ImageGalleryItem 
+                        onClick={this.props.setModalPath}
                         src={item.webUrl} 
                         alt={this.state.keyword}
+                        bigImage={item.largeUrl}
                         key={item.id}
                     />)}
                 </ul>
