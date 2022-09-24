@@ -4,12 +4,11 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Modal } from "components/Modal/Modal";
 import { Loader } from "./Loder/Loader";
 import { Button } from "./Button/Button";
-import axios from "axios";
+import { getDataFromPixabay } from "js/pixabayApi";
+
 
 
 export class App extends Component {
-  apiKey = "29155901-7a6502b1ec64ba72602e491fa"
-  url = "https://pixabay.com/api/"
   state = {
     searchKeyword: "",
     bigImagePath: "",
@@ -23,32 +22,17 @@ export class App extends Component {
         this.setState({
             isLoading: true
         })
-        axios.get(this.url, 
-        {
-            params:{
-                key: this.apiKey,
-                q: this.state.searchKeyword,
-                page: this.state.page,
-                per_page: 12
-            }
-        })
-        .then(response => {
-            const images = response.data.hits.map(item => {
-                return {
-                    id: item.id,
-                    webUrl: item.webformatURL,
-                    largeUrl: item.largeImageURL
-                }
-            })
+        getDataFromPixabay(this.state.searchKeyword, this.state.page)
+        .then(data => {
             if(prevState.searchKeyword !== this.state.searchKeyword){
                 this.setState({
-                    renderImages: images,
-                    totalItems: response.data.totalHits
+                    renderImages: data.hits,
+                    totalItems: data.totalHits
                 })
             }
             else{
                 this.setState(prevState => {
-                    const newImages = prevState.renderImages.concat(images);
+                    const newImages = prevState.renderImages.concat(data.hits);
                     return {renderImages: newImages};
                 })
             }
@@ -63,7 +47,7 @@ export class App extends Component {
         })
         
     }
-}
+  }
   changeSerachKeyword = word => {
     this.setState({
       searchKeyword: word,
